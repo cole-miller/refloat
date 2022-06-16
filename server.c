@@ -177,13 +177,13 @@ static void follower(struct ServerEnv *env) {
 }
 
 struct CandidateTally {
-	uint64_t num_votes_received;
+	uint16_t num_votes_received;
 	bool heard_from[RAFT_MAX_SERVERS + 1];
 };
 
 static void candidate_solicit_votes(struct ServerEnv *env,
 		const struct CandidateTally *tally) {
-	uint64_t num_servers = env->num_servers(env->context);
+	uint16_t num_servers = env->num_servers(env->context);
 	for (ServerId i = 1; i <= num_servers; i += 1) {
 		if (!tally->heard_from[i]) {
 			env->send_to_server(i, SERVER_MSG_WANT_VOTE,
@@ -199,7 +199,7 @@ static enum State candidate_handle_msg(struct ServerEnv *env,
 	if (update_result > 0) {
 		return STATE_FOLLOWER;
 	}
-	uint64_t num_servers = env->num_servers(env->context);
+	uint16_t num_servers = env->num_servers(env->context);
 
 	switch (msg.kind) {
 	case SERVER_MSG_WANT_VOTE:
@@ -247,7 +247,7 @@ static void candidate(struct ServerEnv *env) {
 	env->advance_term_and_vote_for_self(env->context);
 
 	ServerId my_id = env->my_id(env->context);
-	uint64_t num_servers = env->num_servers(env->context);
+	uint16_t num_servers = env->num_servers(env->context);
 	struct CandidateTally tally = {.num_votes_received = 1};
 	for (ServerId i = 1; i <= num_servers; i += 1) {
 		tally.heard_from[i] = (i == my_id);
@@ -294,7 +294,7 @@ struct TrackedIndices {
 static void leader_send_appends_to_all(struct ServerEnv *env,
 		const struct TrackedIndices indices[]) {
 	ServerId my_id = env->my_id(env->context);
-	uint64_t num_servers = env->num_servers(env->context);
+	uint16_t num_servers = env->num_servers(env->context);
 	ServerLogIndex my_last_index = env->last_log_index(env->context);
 	for (ServerId i = 1; i <= num_servers; i += 1) {
 		if (i == my_id) {
@@ -331,11 +331,11 @@ static void leader_commit_newly_replicated(struct ServerEnv *env,
 		ServerLogIndex start) {
 	ServerTerm current_term = env->current_term(env->context);
 	ServerLogIndex base = env->committed_index(env->context);
-	uint64_t num_servers = env->num_servers(env->context);
+	uint16_t num_servers = env->num_servers(env->context);
 	for (ServerLogIndex j = start;
 			j > base && env->log_entry(j, env->context).term_added == current_term;
 			j -= 1) {
-		uint64_t num_replicas = 0;
+		uint16_t num_replicas = 0;
 		for (ServerId i = 1; i <= num_servers; i += 1) {
 			if (indices[i].matched >= j) {
 				num_replicas += 1;

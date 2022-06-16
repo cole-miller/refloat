@@ -59,7 +59,7 @@ enum TimeoutKind {
 };
 
 struct ServerEnv {
-	uint64_t (*num_servers)(void *context);
+	uint16_t (*num_servers)(void *context);
 	ServerId (*my_id)(void *context);
 
 	bool (*receive_messages)(struct ServerInbox *inbox,
@@ -72,7 +72,7 @@ struct ServerEnv {
 			void *context);
 	void (*send_to_server)(ServerId dest, enum ServerMsgKind kind,
 			ServerLogIndex index,
-			uint64_t num_entries,
+			uint16_t num_entries,
 			void *context);
 
 	ServerTerm (*current_term)(void *context);

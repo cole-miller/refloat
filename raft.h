@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 #define RAFT_MAX_SERVERS 101
-#define RAFT_PAYLOAD_SIZE 160
+#define RAFT_PAYLOAD_SIZE 200
 
 enum RaftReportKind {
 	RAFT_MSG_NOT_LEADER,

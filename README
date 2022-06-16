@@ -1,0 +1,3 @@
+This is going to be an implementation of Raft, the consensus algorithm. It's
+based on some code I wrote in college, but substantially rewritten to improve
+code quality and make the tricky bits more testable.

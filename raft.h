@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+// TODO support read-only requests
+
 #define RAFT_MAX_SERVERS 101
 #define RAFT_PAYLOAD_SIZE 200
 

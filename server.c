@@ -106,7 +106,7 @@ static bool follower_handle_try_append(struct ServerEnv *env,
 	if (update_result >= 0
 			&& request.index <= env->last_log_index(env->context)
 			&& request.term == env->log_entry(request.index, env->context).term_added) {
-		env->truncate_and_append_to_log(request.index,
+		env->splice_entries(request.index,
 				request.entries,
 				request.num_entries,
 				env->context);

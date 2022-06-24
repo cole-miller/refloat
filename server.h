@@ -68,7 +68,7 @@ struct ServerEnv {
 
 	void (*send_to_client)(enum RaftReportKind kind,
 			RaftMsgTag tag,
-			const uint8_t *payload,
+			const uint8_t payload[],
 			void *context);
 	void (*send_to_server)(ServerId dest, enum ServerMsgKind kind,
 			ServerLogIndex index,
@@ -84,7 +84,7 @@ struct ServerEnv {
 	ServerLogIndex (*last_log_index)(void *context);
 	ServerLogIndex (*committed_index)(void *context);
 	struct ServerEntry (*log_entry)(ServerLogIndex index, void *context);
-	void (*truncate_and_append_to_log)(ServerLogIndex at,
+	void (*splice_entries)(ServerLogIndex at,
 			const struct ServerEntry entries[], uint64_t count,
 			void *context);
 	void (*append_entry_to_log)(enum ServerEntryKind kind,
